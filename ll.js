@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-const PASSWORD = process.env.PASSWORD;
-const USERNAME = process.env.USERNAME;
+const PASSWORD = 'theoddballgazette';
+const USERNAME = 'The#OddBall#Gazette#';
 
 (async () => {
   // Launch the browser and open a new blank page
