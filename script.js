@@ -2,7 +2,7 @@
 import puppeteer from 'puppeteer';
 import dotenv from 'dotenv';
 dotenv.config();
-
+import getImageCaption from './getImageCaption.js';
 
 const PASSWORD = process.env.PASSWORD;
 const USERNAME = process.env.USERNAME;
@@ -20,7 +20,7 @@ const USERNAME = process.env.USERNAME;
   // Wait for the page to load
   console.log('Waiting for the page to load...');
 
-await new Promise(resolve => setTimeout(resolve, 10000));
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
 
   // Input username
@@ -38,7 +38,7 @@ await new Promise(resolve => setTimeout(resolve, 10000));
   // Wait for the page to load
   console.log('Waiting for the page to load after login...');
   await page.waitForSelector('input[type="password"]');
-await new Promise(resolve => setTimeout(resolve, 10000));
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
 
   // Input password
@@ -50,7 +50,7 @@ await new Promise(resolve => setTimeout(resolve, 10000));
   // Wait for the page to load
   console.log('Waiting for the page to load after password...');
 
-await new Promise(resolve => setTimeout(resolve, 10000));
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
 
   // Click on the login button
@@ -62,7 +62,7 @@ await new Promise(resolve => setTimeout(resolve, 10000));
   // Wait for the page to load
   console.log('Waiting for the page to load after final login...');
 
-await new Promise(resolve => setTimeout(resolve, 10000));
+  await new Promise(resolve => setTimeout(resolve, 10000));
 
 
   // Search for a keyword
@@ -72,7 +72,7 @@ await new Promise(resolve => setTimeout(resolve, 10000));
   // Wait for the page to load
   await new Promise(resolve => setTimeout(resolve, 15000));
 
-//   await page.waitForTimeout(15000);
+  //   await page.waitForTimeout(15000);
 
   // Messages to be sent
   const messages = ['Wooooowww!!', 'amazingggg', ':)'];
@@ -95,6 +95,66 @@ await new Promise(resolve => setTimeout(resolve, 10000));
 
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 6000));
+
+    //------------------------------ get the image url --------------------------------------------------------------------------------
+
+    // Find the image element with the specified criteria
+    const imgElements = await page.$x('//img[@alt="Image"]');
+
+    // Check if there is at least one image element
+    if (imgElements.length > 0) {
+      // Extract the image source (link)
+      const imageLink = await (await imgElements[0].getProperty('src')).jsonValue();
+
+      // Print the image link or use it as needed
+      console.log("Image Link:", imageLink);
+
+      // Store the result in a variable
+      let captionResult;
+
+      // Call the function and store the result
+      getImageCaption(imageLink)
+        .then(result => {
+          console.log('Image Caption:', result);
+          captionResult = result; // Store the result in the variable
+        })
+        .catch(error => console.error('Error:', error));
+
+
+      // Continue with other actions related to the image
+
+    } else {
+      console.log("No image found on this tweet.");
+      // If there's no image, you can choose to skip the tweet or perform other actions.
+    }
+
+
+    // -----------------------------------------------------------------------------------------------------------------------
+
+
+    // here we get the caption of the image and save it 
+
+    // Replace 'your_element_locator' with the appropriate method and value to locate your element
+    const elementLocator = 'div[data-testid="tweetText"]';
+
+    try {
+      // Wait for the element to be present on the page
+      const elementHandle = await page.waitForSelector(elementLocator, { timeout: 10000 });
+
+      // Extract the full text inside the element
+      const fullText = await page.evaluate(element => element.textContent, elementHandle);
+
+      // Print or do whatever you need with the extracted text
+      console.log("Full Text:", fullText);
+    } catch (error) {
+      console.log("Element not found or timed out. No caption available.");
+      // Handle the case where the element is not found or the timeout occurs.
+    }
+
+
+
+
+    //------------------------------ END --------------------------------------------------------------------------------
 
     // Input a random message
     const titleInput = await page.$('div[class*="public-DraftStyleDefault-block"]');
