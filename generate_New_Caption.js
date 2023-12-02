@@ -6,7 +6,7 @@ config();  // Load environment variables from .env
 
 
 const NAGA_API_KEY = process.env.NAGA_API_KEY;
-
+console.log('NAGA_API_KEY:', NAGA_API_KEY);
 
 // Function to generate a new caption using Naga API
 async function generate_New_Caption(imageDescription, imageCaption) {
