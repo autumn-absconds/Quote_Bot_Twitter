@@ -2,7 +2,8 @@
 import puppeteer from 'puppeteer';
 import dotenv from 'dotenv';
 dotenv.config();
-import getImageCaption from './getImageCaption.js';
+import get_image_discription_js from './get_image_discription_js.js';
+import generate_New_Caption from './generate_New_Caption.js';
 
 const PASSWORD = process.env.PASSWORD;
 const USERNAME = process.env.USERNAME;
@@ -66,7 +67,7 @@ const USERNAME = process.env.USERNAME;
 
 
   // Search for a keyword
-  const keyword = 'dog';
+  const keyword = 'cat memes';
   await page.goto(`https://twitter.com/search?q=${keyword}&src=typed_query`);
 
   // Wait for the page to load
@@ -75,8 +76,8 @@ const USERNAME = process.env.USERNAME;
   //   await page.waitForTimeout(15000);
 
   // Messages to be sent
-  const messages = ['Wooooowww!!', 'amazingggg', ':)'];
-  const n_scrolls = 3;
+  // const messages = ['Wooooowww!!', 'amazingggg', ':)'];
+  const n_scrolls = 1;
 
   // Perform actions for each scroll
   for (let scroll = 0; scroll < n_scrolls; scroll++) {
@@ -91,6 +92,11 @@ const USERNAME = process.env.USERNAME;
 
     // Click on the quote tweet button
     const quoteTweetButton = await page.$('a[role="menuitem"]');
+    // const allMenuItems = await page.$$('a[role="menuitem"]');
+    // const quoteTweetButton = allMenuItems[0];
+
+    console.log("Quoting Tweet Button:", quoteTweetButton);
+
     await quoteTweetButton.click();
 
     // Wait for some time
@@ -100,8 +106,9 @@ const USERNAME = process.env.USERNAME;
 
     // Find the image element with the specified criteria
     const imgElements = await page.$x('//img[@alt="Image"]');
+    // Store the result in a variable
+    let imageDescription = '';
 
-    // Check if there is at least one image element
     if (imgElements.length > 0) {
       // Extract the image source (link)
       const imageLink = await (await imgElements[0].getProperty('src')).jsonValue();
@@ -109,19 +116,18 @@ const USERNAME = process.env.USERNAME;
       // Print the image link or use it as needed
       console.log("Image Link:", imageLink);
 
-      // Store the result in a variable
-      let captionResult;
-
       // Call the function and store the result
-      getImageCaption(imageLink)
-        .then(result => {
-          console.log('Image Caption:', result);
-          captionResult = result; // Store the result in the variable
-        })
-        .catch(error => console.error('Error:', error));
-
-
-      // Continue with other actions related to the image
+      try {
+        imageDescription = await get_image_discription_js(imageLink);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+      // get_image_discription_js(imageLink)
+      //   .then(result => {
+      //     console.log('Image Caption:', result);
+      //     imageDescription = result; // Store the result in the variable
+      //   })
+      //   .catch(error => console.error('Error:', error));
 
     } else {
       console.log("No image found on this tweet.");
@@ -136,29 +142,45 @@ const USERNAME = process.env.USERNAME;
 
     // Replace 'your_element_locator' with the appropriate method and value to locate your element
     const elementLocator = 'div[data-testid="tweetText"]';
+    let imageCaption = '';
 
     try {
       // Wait for the element to be present on the page
       const elementHandle = await page.waitForSelector(elementLocator, { timeout: 10000 });
 
       // Extract the full text inside the element
-      const fullText = await page.evaluate(element => element.textContent, elementHandle);
+      imageCaption = await page.evaluate(element => element.textContent, elementHandle);
 
       // Print or do whatever you need with the extracted text
-      console.log("Full Text:", fullText);
+      console.log("Full Text:", imageCaption);
     } catch (error) {
       console.log("Element not found or timed out. No caption available.");
       // Handle the case where the element is not found or the timeout occurs.
     }
 
+    let postCaption = '';
+    // gnerate caption for image
+    try {
+      postCaption = await generate_New_Caption(imageDescription, imageCaption);
+    } catch (error) {
+      console.error('Error:', error);
 
+    }
+    // generate_New_Caption(imageDescription, imageCaption)
+    //   .then(result => {
+    //     console.log('New Caption:', result);
+    //     postCaption = result; // Store the result in the variable
+    //   })
+    //   .catch(error => console.error('Error:', error));
 
 
     //------------------------------ END --------------------------------------------------------------------------------
 
     // Input a random message
+    console.log('postCaption  : ', postCaption);
+
     const titleInput = await page.$('div[class*="public-DraftStyleDefault-block"]');
-    await titleInput.type(messages[Math.floor(Math.random() * messages.length)]);
+    await titleInput.type(postCaption);
 
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -166,6 +188,7 @@ const USERNAME = process.env.USERNAME;
     // Click on the tweet button
     const tweetButton = await page.$('div[data-testid="tweetButton"]');
     await tweetButton.click();
+    console.log('Posted');
 
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -175,7 +198,6 @@ const USERNAME = process.env.USERNAME;
 
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Posted');
 
   }
 

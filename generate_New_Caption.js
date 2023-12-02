@@ -1,8 +1,11 @@
 // const axios = require('axios');
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
+NAGA_API_KEY = process.env.NAGA_API_KEY;
 
 // Function to generate a new caption using Naga API
-async function generateNewCaption(imageDescription, imageCaption) {
+async function generate_New_Caption(imageDescription, imageCaption) {
 
     // Construct the prompt based on the provided texts
     const prompt = `${imageDescription ? `"${imageDescription}"` : ''} ${imageCaption ? `"${imageCaption}"` : ''}`;
@@ -13,7 +16,7 @@ async function generateNewCaption(imageDescription, imageCaption) {
         messages: [
             {
                 role: 'system',
-                content: 'Generate a new short caption for a Twitter post based on the provided texts(if possible write in the same tone as of the imageCaption provided):',
+                content: 'Generate a new short caption for a Twitter post based on the provided texts(if possible write in the same tone as of the imageCaption provided and if nothing is given then return only empty spaces):',
                 name: 'instructions',
             },
             {
@@ -29,7 +32,7 @@ async function generateNewCaption(imageDescription, imageCaption) {
         const response = await axios.post('https://api.naga.ac/v1/chat/completions', requestBody, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer 5orXoTFfvt9NRb9XOgamsLOmK3kx62wGT8DL8c7Hp_Y`, // Replace with your API key
+                'Authorization': `Bearer ${NAGA_API_KEY}`, // Replace with your API key
             },
         });
 
@@ -42,15 +45,4 @@ async function generateNewCaption(imageDescription, imageCaption) {
     }
 }
 
-module.exports = generateNewCaption;
-// Example usage
-const imageDescription = 'A beautiful landscape';
-const imageCaption = 'Sunset over the mountains';
-
-generateNewCaption(imageDescription, imageCaption)
-    .then((generatedCaption) => {
-        console.log('Generated Caption:', generatedCaption);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+export default generate_New_Caption;

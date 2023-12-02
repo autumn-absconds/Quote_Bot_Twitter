@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
 
-function getImageCaption(imageLink) {
+function get_image_discription_js(imageLink) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', ['image_captioning.py', imageLink]);
+        const pythonProcess = spawn('python', ['get_image_discription.py', imageLink]);
 
         let result = '';
 
@@ -25,4 +25,4 @@ function getImageCaption(imageLink) {
 }
 
 // Export the function
-module.exports = getImageCaption;
+export default get_image_discription_js;
