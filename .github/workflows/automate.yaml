@@ -21,6 +21,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Print Environment Variables
+        run: |
+          echo "USERNAME: $USERNAME"
+          echo "PASSWORD: $PASSWORD"
+          echo "NAGA_API_KEY: $NAGA_API_KEY"
+          
       - name: Run script
         env:
           USERNAME: ${{ secrets.USERNAME }}
