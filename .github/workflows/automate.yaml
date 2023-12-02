@@ -2,7 +2,7 @@ name: Run Script
 
 on:
   schedule:
-    - cron: "0 0,12 * * *"
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -33,3 +33,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           NAGA_API_KEY: ${{ secrets.NAGA_API_KEY }}
         run: node script.js
+
+
+
+        
