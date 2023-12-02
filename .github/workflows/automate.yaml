@@ -25,5 +25,5 @@ jobs:
         env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          NAGA_API_KEY : ${{ secrets.NAGA_API_KEY }}
+          NAGA_API_KEY: ${{ secrets.NAGA_API_KEY }}
         run: node script.js
