@@ -20,13 +20,10 @@ const USERNAME = process.env.USERNAME;
 
   // Wait for the page to load
   console.log('Waiting for the page to load...');
-
   await new Promise(resolve => setTimeout(resolve, 10000));
-
 
   // Input username
   console.log('Typing username...');
-
   const usernameInput = await page.$('input');
   await usernameInput.type(USERNAME);
 
@@ -41,30 +38,23 @@ const USERNAME = process.env.USERNAME;
   await page.waitForSelector('input[type="password"]');
   await new Promise(resolve => setTimeout(resolve, 10000));
 
-
   // Input password
   console.log('Typing password...');
-
   const passwordInput = await page.$('input[type="password"]');
   await passwordInput.type(PASSWORD);
 
   // Wait for the page to load
   console.log('Waiting for the page to load after password...');
-
   await new Promise(resolve => setTimeout(resolve, 10000));
-
 
   // Click on the login button
   console.log('Clicking on the final login button...');
-
   const finalLoginButton = await page.$$('div[role="button"]');
   await finalLoginButton[finalLoginButton.length - 1].click();
 
   // Wait for the page to load
   console.log('Waiting for the page to load after final login...');
-
   await new Promise(resolve => setTimeout(resolve, 10000));
-
 
   // Search for a keyword
   const keyword = 'cat memes';
@@ -73,11 +63,7 @@ const USERNAME = process.env.USERNAME;
   // Wait for the page to load
   await new Promise(resolve => setTimeout(resolve, 15000));
 
-  //   await page.waitForTimeout(15000);
-
-  // Messages to be sent
-  // const messages = ['Wooooowww!!', 'amazingggg', ':)'];
-  const n_scrolls = 1;
+  const n_scrolls = 10; // Number of times to scroll the page aka number of tweets to retweet
 
   // Perform actions for each scroll
   for (let scroll = 0; scroll < n_scrolls; scroll++) {
@@ -88,15 +74,11 @@ const USERNAME = process.env.USERNAME;
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 6000));
 
-    // await page.waitForTimeout(6000);
-
     // Click on the quote tweet button
     const quoteTweetButton = await page.$('a[role="menuitem"]');
     // const allMenuItems = await page.$$('a[role="menuitem"]');
     // const quoteTweetButton = allMenuItems[0];
-
     console.log("Quoting Tweet Button:", quoteTweetButton);
-
     await quoteTweetButton.click();
 
     // Wait for some time
@@ -108,14 +90,11 @@ const USERNAME = process.env.USERNAME;
     const imgElements = await page.$x('//img[@alt="Image"]');
     // Store the result in a variable
     let imageDescription = '';
-
     if (imgElements.length > 0) {
       // Extract the image source (link)
       const imageLink = await (await imgElements[0].getProperty('src')).jsonValue();
-
       // Print the image link or use it as needed
       console.log("Image Link:", imageLink);
-
       // Call the function and store the result
       try {
         imageDescription = await get_image_discription_js(imageLink);
@@ -134,28 +113,19 @@ const USERNAME = process.env.USERNAME;
       // If there's no image, you can choose to skip the tweet or perform other actions.
     }
 
-
-    // -----------------------------------------------------------------------------------------------------------------------
-
-
-    // here we get the caption of the image and save it 
-
-    // Replace 'your_element_locator' with the appropriate method and value to locate your element
+    // here we get the caption of the image and save it in imageCaption
     const elementLocator = 'div[data-testid="tweetText"]';
     let imageCaption = '';
 
     try {
       // Wait for the element to be present on the page
       const elementHandle = await page.waitForSelector(elementLocator, { timeout: 10000 });
-
       // Extract the full text inside the element
       imageCaption = await page.evaluate(element => element.textContent, elementHandle);
-
       // Print or do whatever you need with the extracted text
       console.log("Full Text:", imageCaption);
     } catch (error) {
       console.log("Element not found or timed out. No caption available.");
-      // Handle the case where the element is not found or the timeout occurs.
     }
 
     let postCaption = '';
@@ -173,12 +143,8 @@ const USERNAME = process.env.USERNAME;
     //   })
     //   .catch(error => console.error('Error:', error));
 
-
-    //------------------------------ END --------------------------------------------------------------------------------
-
-    // Input a random message
+   // input the caption
     console.log('postCaption  : ', postCaption);
-
     const titleInput = await page.$('div[class*="public-DraftStyleDefault-block"]');
     await titleInput.type(postCaption);
 
@@ -188,7 +154,7 @@ const USERNAME = process.env.USERNAME;
     // Click on the tweet button
     const tweetButton = await page.$('div[data-testid="tweetButton"]');
     await tweetButton.click();
-    console.log('Posted');
+    console.log('Posted ;) hehehehehe');
 
     // Wait for some time
     await new Promise(resolve => setTimeout(resolve, 2000));

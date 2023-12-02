@@ -1,6 +1,5 @@
 // const axios = require('axios');
 import axios from 'axios';
-import dotenv from 'dotenv';
 import { config } from 'dotenv';
 config();  // Load environment variables from .env
 
@@ -14,7 +13,6 @@ async function generate_New_Caption(imageDescription, imageCaption) {
     // Construct the prompt based on the provided texts
     const prompt = `${imageDescription ? `"${imageDescription}"` : ''} ${imageCaption ? `"${imageCaption}"` : ''}`;
 
-    // Build the request body
     const requestBody = {
         model: 'gpt-3.5-turbo',
         messages: [
@@ -32,11 +30,10 @@ async function generate_New_Caption(imageDescription, imageCaption) {
     };
 
     try {
-        // Make the POST request to Naga API
         const response = await axios.post('https://api.naga.ac/v1/chat/completions', requestBody, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${NAGA_API_KEY}`, // Replace with your API key
+                'Authorization': `Bearer ${NAGA_API_KEY}`,
             },
         });
 

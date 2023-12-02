@@ -24,5 +24,4 @@ function get_image_discription_js(imageLink) {
     });
 }
 
-// Export the function
 export default get_image_discription_js;
