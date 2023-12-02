@@ -7,4 +7,3 @@ full code
 -
 # get image url -
 image_captioning.py containes the api for image capt 
- which is run by the js function run_captioning.js
