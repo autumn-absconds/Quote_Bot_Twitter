@@ -1,5 +1,6 @@
 # Twitter Automation Project
-- Note-: currently this project is used by running locally as and issues persist(due to testing many times twitter account is demanding opt on login , but this happing only in on account which in mine that was used while testing so in this repo the logs may get errors for mine specific username and password.)
+> Note-: currently this project is used by running locally as some issues persist(due to testing many times twitter account is demanding opt on login , but this happing only in on account which in mine that was used while testing so in this repo the logs may get errors for mine specific username and password otherwise project is good to go.)
+> 
 This project is designed to automate the process of reposting content on Twitter. It uses a combination of AI technologies to generate image descriptions and write captions for the posts that need to be requoted.
 
 ## Features
