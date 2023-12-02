@@ -2,7 +2,10 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
-NAGA_API_KEY = process.env.NAGA_API_KEY;
+
+
+const NAGA_API_KEY = process.env.NAGA_API_KEY;
+
 
 // Function to generate a new caption using Naga API
 async function generate_New_Caption(imageDescription, imageCaption) {
