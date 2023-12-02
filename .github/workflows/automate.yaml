@@ -4,11 +4,14 @@ on:
   schedule:
     - cron: "0 0,12 * * *"
   workflow_dispatch:
-
+  
 jobs:
   run-script:
     runs-on: ubuntu-latest
-
+    env:
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      NAGA_API_KEY: ${{ secrets.NAGA_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
