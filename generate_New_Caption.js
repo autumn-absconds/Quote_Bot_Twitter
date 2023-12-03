@@ -18,7 +18,8 @@ async function generate_New_Caption(imageDescription, imageCaption) {
         messages: [
             {
                 role: 'system',
-                content: 'Generate a new short caption for a Twitter post based on the provided texts(if possible write in the same tone as of the imageCaption provided and if nothing is given then return only empty spaces):',
+                content: `Compose a succinct, captivating caption for a Twitter post that needs to be requoted. The caption should draw inspiration from the provided texts and, if feasible, mirror the tone of the given imageCaption and should not be long. If no text is provided, return an empty string. The caption should be written in third person, as it will appear as a quote from another post:
+                `,
                 name: 'instructions',
             },
             {
